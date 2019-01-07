@@ -1,0 +1,17 @@
+{
+  "name": "react-native-wps-office",
+  "version": "1.0.0",
+  "description": "React Native实现调用wps app打开word/pdf文档",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "native",
+    "wps",
+    "pdf"
+  ],
+  "author": "1uokun",
+  "license": "ISC"
+}

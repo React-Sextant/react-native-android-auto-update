@@ -22,6 +22,7 @@ class CheckUpdateTask extends AsyncTask<Void, Void, String> {
     private int mType;
     private boolean mShowProgressDialog;
     private static final String url = new Constants().getUPDATE_URL();
+    private static final String updateMessage = new Constants().getAPK_UPDATE_CONTENT();
 
     CheckUpdateTask(Context context, int type, boolean showProgressDialog) {
 
@@ -49,32 +50,16 @@ class CheckUpdateTask extends AsyncTask<Void, Void, String> {
         }
 
         if (!TextUtils.isEmpty(result)) {
-            parseJson(result);
+            Log.e("onPostExecute",result);
+            parseJson();
         }
     }
 
-    private void parseJson(String result) {
-        try {
-
-            JSONObject obj = new JSONObject(result);
-            String updateMessage = obj.getString(new Constants().getAPK_UPDATE_CONTENT());
-            String apkUrl = obj.getString(new Constants().getAPK_DOWNLOAD_URL());
-            int apkCode = obj.getInt(new Constants().getAPK_VERSION_CODE());
-
-            int versionCode = AppUtils.getVersionCode(mContext);
-
-            if (apkCode > versionCode) {
-                if (mType == new Constants().getTYPE_NOTIFICATION()) {
-                    new NotificationHelper(mContext).showNotification(updateMessage, apkUrl);
-                } else if (mType == new Constants().getTYPE_DIALOG()) {
-                    showDialog(mContext, updateMessage, apkUrl);
-                }
-            } else if (mShowProgressDialog) {
-                Toast.makeText(mContext, mContext.getString(R.string.android_auto_update_toast_no_new_update), Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (JSONException e) {
-            Log.e(new Constants().getTAG(), "parse json error");
+    private void parseJson() {
+        if (mType == new Constants().getTYPE_NOTIFICATION()) {
+            new NotificationHelper(mContext).showNotification(updateMessage, url);
+        } else if (mType == new Constants().getTYPE_DIALOG()) {
+            showDialog(mContext, updateMessage, url);
         }
     }
 

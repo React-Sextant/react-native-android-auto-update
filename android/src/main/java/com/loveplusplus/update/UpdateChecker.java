@@ -11,7 +11,6 @@ public class UpdateChecker {
         if (context != null) {
             new CheckUpdateTask(context,new Constants().getTYPE_DIALOG(), true).execute();
         } else {
-            Toast.makeText(context, "The arg context is null", Toast.LENGTH_SHORT).show();
             Log.e(new Constants().getTAG(), "The arg context is null");
         }
     }
@@ -21,7 +20,6 @@ public class UpdateChecker {
         if (context != null) {
             new CheckUpdateTask(context, new Constants().getTYPE_NOTIFICATION(), false).execute();
         } else {
-            Toast.makeText(context, "The arg context is null", Toast.LENGTH_SHORT).show();
             Log.e(new Constants().getTAG(), "The arg context is null");
         }
 

@@ -36,7 +36,7 @@ public class HttpUtils {
             }
             result = strBuilder.toString();
         } catch (Exception e) {
-            Log.e(new Constants().getTAG(), "http  error");
+            Log.e(new Constants().getTAG(), "http22  error"+urlStr+"asd");
         } finally {
             if (buffer != null) {
                 try {

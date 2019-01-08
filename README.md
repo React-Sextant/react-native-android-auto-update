@@ -26,10 +26,10 @@ RNAndroidAutoUpdate.checkForNotification(
 ```
 
 ## undo
-1.[ ] 未能拿到MainActivity.this
-2.[ ] debugger下反馈http error
-3.[ ] 基于上一个尝试使用okHttp
-4.[ ] android.app.notificationchannel 老版本兼容
+ - [ ] 未能拿到MainActivity.this
+ - [ ] debugger下反馈http error
+ - [ ] 基于上一个尝试使用okHttp
+ - [ ] android.app.notificationchannel 老版本兼容
 
 ## reference
  - [1] [android-auto-update](https://github.com/feicien/android-auto-update)

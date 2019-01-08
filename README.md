@@ -3,7 +3,7 @@ React Native Android自动下载更新APK，进度条在通知栏中显示
 
 ## Getting Started
 
-`$ npm install git://github.com/zhijiasoft/react-native-android-auto-update.git#v0.1.0`
+`$ npm install git://github.com/zhijiasoft/react-native-android-auto-update.git`
 
 
 `$ react-native link react-native-android-auto-update`

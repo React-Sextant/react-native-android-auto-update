@@ -1,6 +1,6 @@
 package com.loveplusplus.update;
 
-import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -12,8 +12,8 @@ import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
 /**
- * @author 1uokun (luo300718@gmail.com)
- * @since 2019-01-07 22:07
+ * @author feicien (ithcheng@gmail.com)
+ * @since 2018-04-07 16:49
  */
 public class NotificationHelper extends ContextWrapper {
 
@@ -23,19 +23,16 @@ public class NotificationHelper extends ContextWrapper {
 
     private static final int NOTIFICATION_ID = 0;
 
-    public NotificationCompat.Builder getNotification_25(String title, String content){
-        return new NotificationCompat.Builder(getApplicationContext())
-                .setContentTitle(title)
-                .setContentText(content)
-                .setSmallIcon(android.R.drawable.stat_notify_more)
-                .setAutoCancel(true);
-    }
-
     public NotificationHelper(Context base) {
         super(base);
 
-        Notification notification = getNotification_25("应用更新", "应用有新版本").build();
-        getManager().notify(1,notification);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, "应用更新", NotificationManager.IMPORTANCE_LOW);
+            mChannel.setDescription("应用有新版本");
+            mChannel.enableLights(true); //是否在桌面icon右上角展示小红点
+            getManager().createNotificationChannel(mChannel);
+        }
     }
 
     /**
@@ -45,7 +42,7 @@ public class NotificationHelper extends ContextWrapper {
 
         Intent myIntent = new Intent(this, DownloadService.class);
         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        myIntent.putExtra(new Constants().getAPK_DOWNLOAD_URL(), apkUrl);
+        myIntent.putExtra(Constants.APK_DOWNLOAD_URL, apkUrl);
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = getNofity(content)

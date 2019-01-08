@@ -42,7 +42,7 @@ public class ApkUtils {
 
 
     private static Uri getApkUri(File apkFile) {
-        Log.d(new Constants().getTAG(), apkFile.toString());
+        Log.d(Constants.TAG, apkFile.toString());
         //如果没有设置 SDCard 写权限，或者没有 SDCard,apk 文件保存在内存中，需要授予权限才能安装
         try {
             String[] command = {"chmod", "777", apkFile.toString()};
@@ -51,7 +51,7 @@ public class ApkUtils {
         } catch (IOException ignored) {
         }
         Uri uri = Uri.fromFile(apkFile);
-        Log.d(new Constants().TAG, uri.toString());
+        Log.d(Constants.TAG, uri.toString());
         return uri;
     }
 

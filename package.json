@@ -1,6 +1,6 @@
 {
   "name": "react-native-android-auto-update",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "React Native Android 应用自动更新",
   "main": "index.js",
   "scripts": {

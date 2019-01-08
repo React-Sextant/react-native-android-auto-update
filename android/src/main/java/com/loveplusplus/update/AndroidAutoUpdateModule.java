@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 
 import android.app.Activity;
+import android.content.Intent;
 
 public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule implements LifecycleEventListener {
 
@@ -15,27 +16,12 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule implemen
     }
 
     @ReactMethod
-    public void checkForNotification (String url, ReadableMap params){
+    public void goToDownload (String url){
         final Activity activity = getCurrentActivity();
-        //设置apk下载地址
-        new Constants().setUPDATE_URL(url);
-        //设置apk版本更新信息
-        new Constants().setAPK_UPDATE_CONTENT(params.getString("updateMessage"));
-
-        //使用Notification广播更新
-        UpdateChecker.checkForNotification(activity);
+        Intent intent = new Intent(activity.getApplicationContext(), DownloadService.class);
+        intent.putExtra(Constants.APK_DOWNLOAD_URL, url);
+        activity.startService(intent);
     }
-
-    @ReactMethod
-    public void checkForDialog (String url, ReadableMap params){
-        final Activity activity = getCurrentActivity();
-        new Constants().setUPDATE_URL(url);
-        new Constants().setAPK_UPDATE_CONTENT(params.getString("updateMessage"));
-
-        //使用Dialog询问更新
-        UpdateChecker.checkForDialog(activity);
-    }
-
 
     @Override
     public void onHostResume() {
@@ -52,6 +38,6 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule implemen
 
     @Override
     public String getName() {
-        return "AndroidAutoUpdate";
+        return "RNAndroidAutoUpdate";
     }
 }

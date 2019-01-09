@@ -21,7 +21,8 @@ android {
 
 buildscript {
     repositories {
-        jcenter()
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
     }
 
     dependencies {
@@ -34,5 +35,6 @@ repositories {
 }
 
 dependencies {
+    compile "com.android.support:appcompat-v7:27.1.1"
     compile 'com.facebook.react:react-native:+'
 }

@@ -92,6 +92,7 @@ public class DownloadService extends IntentService {
 
         } catch (Exception e) {
             Log.e(TAG, "download apk file error:" + e.getMessage());
+            AndroidAutoUpdateModule.sendError(e.getMessage());
         } finally {
             if (out != null) {
                 try {
@@ -111,6 +112,7 @@ public class DownloadService extends IntentService {
     }
 
     private void updateProgress(int progress) {
+        AndroidAutoUpdateModule.sendProgress(progress);
         //"正在下载:" + progress + "%"
         mBuilder.setContentText(this.getString(R.string.android_auto_update_download_progress, progress)).setProgress(100, progress, false);
         //setContentInent如果不设置在4.0+上没有问题，在4.0以下会报异常

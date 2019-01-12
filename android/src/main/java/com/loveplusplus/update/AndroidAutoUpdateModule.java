@@ -3,6 +3,7 @@ package com.loveplusplus.update;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,6 +20,15 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
         Intent intent = new Intent(activity.getApplicationContext(), DownloadService.class);
         intent.putExtra("url", url);
         activity.startService(intent);
+    }
+
+    public static void sendProgress(int msg) {
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("LUOKUN_LOAD_PROGRESS", msg);
+    }
+    public static void sendError(String msg) {
+        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("LUOKUN_LOAD_ERROR", msg);
     }
 
     @Override

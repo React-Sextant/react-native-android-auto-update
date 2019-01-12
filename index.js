@@ -1,12 +1,15 @@
-import { NativeModules } from 'react-native';
+import { NativeModules,DeviceEventEmitter } from 'react-native';
 
-const { AndroidAutoUpdate } = NativeModules;
+const { RNAndroidAutoUpdate } = NativeModules;
 
 module.exports = {
-    checkForNotification(url,params) {
-        AndroidAutoUpdate.checkForNotification(url,params)
-    },
-    checkForDialog(url,params) {
-        AndroidAutoUpdate.checkForDialog(url,params)
+    goToDownload(url,progressback,errback) {
+        RNAndroidAutoUpdate.goToDownload(url)
+        typeof progressback === 'function'&&DeviceEventEmitter.addListener('LUOKUN_LOAD_PROGRESS', (msg) => {
+            progressback(msg)
+        });
+        typeof errback === 'function'&&DeviceEventEmitter.addListener('LUOKUN_LOAD_ERROR',(err)=>{
+            errback(err)
+        });
     }
 };

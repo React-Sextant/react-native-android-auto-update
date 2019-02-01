@@ -1,14 +1,14 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-    compile "com.android.support:appcompat-v7:23.0.1"
+    compile rootProject.ext.supportLibVersion ? "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}" : "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"
 
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion rootProject.hasProperty('compileSdkVersion') ? rootProject.compileSdkVersion : 23
+    buildToolsVersion rootProject.hasProperty('buildToolsVersion') ? rootProject.buildToolsVersion : "23.0.1"
 
     defaultConfig {
         minSdkVersion 16

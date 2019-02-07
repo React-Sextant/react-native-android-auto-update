@@ -3,7 +3,7 @@ React Native Android自动下载更新APK，进度条在通知栏中显示
 
 ## Getting Started
 
-`$ npm install git+https://git@github.com/zhijiasoft/react-native-android-auto-update.git`
+`$ npm install git+https://git@github.com/react-sextant/react-native-android-auto-update.git`
 
 
 `$ react-native link react-native-android-auto-update`
@@ -43,7 +43,7 @@ repositories {
  - [ ] 未启用推送通知更新
 
 ## core
- - [DownloadService.java](https://github.com/zhijiasoft/react-native-android-auto-update/blob/master/android/src/main/java/com/loveplusplus/update/DownloadService.java)
+ - [DownloadService.java](https://github.com/react-sextant/react-native-android-auto-update/blob/master/android/src/main/java/com/loveplusplus/update/DownloadService.java)
 
 ## reference
  - [1] [android-auto-update](https://github.com/feicien/android-auto-update)

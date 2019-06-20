@@ -77,7 +77,7 @@ public class DownloadService extends IntentService {
                 int progress = (int) (bytesum * 100L / bytetotal);
                 // 如果进度与之前进度相等，则不更新，如果更新太频繁，否则会造成界面卡顿
                 if (progress != oldProgress) {
-                    updateProgress(progress);
+                    updateProgress(progress, bytesum, bytetotal);
                 }
                 oldProgress = progress;
             }
@@ -108,8 +108,8 @@ public class DownloadService extends IntentService {
         }
     }
 
-    private void updateProgress(int progress) {
-        AndroidAutoUpdateModule.sendProgress(progress);
+    private void updateProgress(int progress, long bytesum, long bytetotal) {
+        AndroidAutoUpdateModule.sendProgress(progress, bytesum, bytetotal);
         //"正在下载:" + progress + "%"
         mBuilder.setContentText(this.getString(R.string.android_auto_update_download_progress, progress)).setProgress(100, progress, false);
         //setContentInent如果不设置在4.0+上没有问题，在4.0以下会报异常

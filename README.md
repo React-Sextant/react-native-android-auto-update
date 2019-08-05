@@ -1,9 +1,10 @@
 # React Native Auto Update For Android In Notification
 React Native Android自动下载更新APK，进度条在通知栏中显示
 
-## Getting Started
+## Getting Started <a href="https://www.npmjs.com/package/react-native-android-auto-update"><img alt="npm version" src="http://img.shields.io/npm/v/react-native-android-auto-update.svg?style=flat-square"></a>
 
-`$ npm install git+https://git@github.com/react-sextant/react-native-android-auto-update.git`
+
+`$ npm install react-native-android-auto-update`
 
 
 `$ react-native link react-native-android-auto-update`

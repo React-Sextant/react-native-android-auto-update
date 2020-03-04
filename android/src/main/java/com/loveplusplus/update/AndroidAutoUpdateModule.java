@@ -79,7 +79,7 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
 
         }
 
-        uiConfig.setUpdateLogoImgRes(context.getResources().getIdentifier("ic_launcher","drawable",context.getPackageName()));
+        uiConfig.setUpdateLogoImgRes(context.getResources().getIdentifier("ic_launcher","mipmap",context.getPackageName()));
 
         // TODO: RN require() to getResourceId
         if(map.hasKey("updateLogoImgRes")){

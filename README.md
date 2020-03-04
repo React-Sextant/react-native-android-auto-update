@@ -4,48 +4,26 @@ React Native Android自动下载更新APK，进度条在通知栏中显示
 ## Getting Started <a href="https://www.npmjs.com/package/react-native-android-auto-update"><img alt="npm version" src="http://img.shields.io/npm/v/react-native-android-auto-update.svg?style=flat-square"></a>
 
 
-`$ npm install react-native-android-auto-update`
+`$ npm install react-native-android-auto-update@latest`
 
 
 `$ react-native link react-native-android-auto-update`
 
-## usage
+## v0.1.0 usage
+[README_old.md](https://github.com/react-sextant/react-native-android-auto-update/blob/master/README_old.md)
+
+## v2.0 usage
+
+reference by [https://github.com/teprinciple/UpdateAppUtils](https://github.com/teprinciple/UpdateAppUtils)
 
 ```javascript
 import {NativeModules} from 'react-native';
 
-NativeModules.RNAndroidAutoUpdate.goToDownload('http://example.com/your.apk');
+NativeModules.RNAndroidAutoUpdate.UpdateApp({
+  apkUrl:"www.baidu.com",
+  updateTitle:"发现新版本V2.0.0",
+  updateContent:"1、Kotlin重构版\n2、支持自定义UI\n3、增加md5校验\n4、更多功能等你探索",
+  force:true,
+  uiType:NativeModules.RNAndroidAutoUpdate.PLENTIFUL,
+});
 ```
-
-`Progress` and `Error` callback
-```javascript
-import RNAndroidAutoUpdate from 'react-native-android-auto-update';
-
-RNAndroidAutoUpdate.goToDownload(
-    'http://example.com/your.apk',
-    progress => console.log(progress),
-    err => alert(err),
-
-);
-```
-
-=============================
-
-如果遇到`Could not resolve com.android.support:**`或者下载jcenter()较慢时，可以改成国内镜像https://www.jianshu.com/p/76a36a37d74c
-```
-repositories {
-    maven { url 'https://maven.aliyun.com/repository/jcenter' }
-    maven { url 'https://maven.aliyun.com/repository/google' }
-}
-```
-
-## todo-list
- - [ ] 未更新至`android-auto-update` v2.0
- - [ ] 未启用推送通知更新
-
-## core
- - [DownloadService.java](https://github.com/react-sextant/react-native-android-auto-update/blob/master/android/src/main/java/com/loveplusplus/update/DownloadService.java)
-
-## reference
- - [1] [android-auto-update](https://github.com/feicien/android-auto-update)
- - [1] [react-native-android-auto-update](https://github.com/ribuluo000/react-native-android-auto-update)

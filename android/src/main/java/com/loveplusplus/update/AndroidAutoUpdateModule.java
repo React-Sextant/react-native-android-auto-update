@@ -1,14 +1,18 @@
 package com.loveplusplus.update;
 
-import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.bridge.ReadableMap;
 
-import android.app.Activity;
-import android.content.Intent;
+import java.util.HashMap;
+import java.util.Map;
+
+import constacne.UiType;
+import model.UiConfig;
+import model.UpdateConfig;
+import update.UpdateAppUtils;
+
 
 public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
 
@@ -19,26 +23,88 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void goToDownload (String url){
-        final Activity activity = getCurrentActivity();
-        Intent intent = new Intent(activity.getApplicationContext(), DownloadService.class);
-        intent.putExtra("url", url);
-        activity.startService(intent);
+    public void UpdateApp(ReadableMap map){
+        String apkUrl = "";
+        String updateTitle = "";
+        String updateContent = "";
+
+        if(map.hasKey("apkUrl")){
+            apkUrl = map.getString("apkUrl");
+        }
+        if(map.hasKey("updateTitle")){
+            updateTitle = map.getString("updateTitle");
+        }
+        if(map.hasKey("updateContent")){
+            updateContent = map.getString("updateContent");
+        }
+
+        //updateConfig
+        UpdateConfig updateConfig = new UpdateConfig();
+        if(map.hasKey("force")){
+            updateConfig.setForce(map.getBoolean("force"));
+        }
+        if(map.hasKey("needCheckMd5")){
+            updateConfig.setNeedCheckMd5(map.getBoolean("needCheckMd5"));
+        }
+        if(map.hasKey("checkWifi")){
+            updateConfig.setCheckWifi(map.getBoolean("checkWifi"));
+        }
+        if(map.hasKey("isShowNotification")){
+            updateConfig.setShowNotification(map.getBoolean("isShowNotification"));
+        }
+        if(map.hasKey("serverVersionName")){
+            updateConfig.setServerVersionName(map.getString("serverVersionName"));
+        }
+        if(map.hasKey("serverVersionCode")){
+            updateConfig.setServerVersionCode(map.getInt("serverVersionCode"));
+        }
+        if(map.hasKey("alwaysShow")){
+            updateConfig.setAlwaysShow(map.getBoolean("alwaysShow"));
+        }
+        if(map.hasKey("thisTimeShow")){
+            updateConfig.setThisTimeShow(map.getBoolean("thisTimeShow"));
+        }
+        if(map.hasKey("alwaysShowDownLoadDialog")){
+            updateConfig.setAlwaysShowDownLoadDialog(map.getBoolean("alwaysShowDownLoadDialog"));
+        }
+        if(map.hasKey("showDownloadingToast")){
+            updateConfig.setShowDownloadingToast(map.getBoolean("showDownloadingToast"));
+        }
+
+
+        // uiConfig
+        UiConfig uiConfig = new UiConfig();
+        if(map.hasKey("uiType")){
+            uiConfig.setUiType(map.getString("uiType"));
+
+        }
+
+        uiConfig.setUpdateLogoImgRes(context.getResources().getIdentifier("ic_launcher","drawable",context.getPackageName()));
+
+        // TODO: RN require() to getResourceId
+        if(map.hasKey("updateLogoImgRes")){
+            uiConfig.setUpdateLogoImgRes(map.getInt("updateLogoImgRes"));
+        }
+
+
+        UpdateAppUtils
+                .getInstance()
+                .apkUrl(apkUrl)
+                .updateTitle(updateTitle)
+                .updateContent(updateContent)
+                .uiConfig(uiConfig)
+                .updateConfig(updateConfig)
+                .update();
     }
 
-    public static void sendProgress(int progress, long bytesum, long bytetotal) {
+    @Override
+    public Map<String, Object> getConstants() {
+        final Map<String, Object> constants = new HashMap<>();
+        constants.put("SIMPLE", UiType.SIMPLE);
+        constants.put("PLENTIFUL", UiType.PLENTIFUL);
+        constants.put("CUSTOM", UiType.CUSTOM);
 
-        WritableMap params = Arguments.createMap();
-        params.putInt("progress", progress);
-        params.putDouble("bytesum",bytesum);
-        params.putDouble("bytetotal",bytetotal);
-
-        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("LUOKUN_LOAD_PROGRESS", params);
-    }
-    public static void sendError(String msg) {
-        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("LUOKUN_LOAD_ERROR", msg);
+        return constants;
     }
 
     @Override

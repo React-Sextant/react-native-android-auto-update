@@ -30,7 +30,7 @@ UpdateApp({
     //@param type: onStart | onDownload | onFinish | onError
     if(type === "onDownload"){
        console.log(msg);   // progress
-    }else if(type === "msg"){
+    }else if(type === "onError"){
        alert(msg);         // error message
     }
   },

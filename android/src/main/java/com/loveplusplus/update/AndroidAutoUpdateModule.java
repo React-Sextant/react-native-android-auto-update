@@ -4,6 +4,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,9 +13,15 @@ import constacne.UiType;
 import model.UiConfig;
 import model.UpdateConfig;
 import update.UpdateAppUtils;
+import listener.OnBtnClickListener;
+import listener.UpdateDownloadListener;
 
 
 public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
+
+    boolean disabledCancel = false;
+    boolean disabledUpdate = false;
+
 
     private static ReactApplicationContext context;
     public AndroidAutoUpdateModule(ReactApplicationContext reactContext) {
@@ -136,8 +143,64 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
                 .updateContent(updateContent)
                 .uiConfig(uiConfig)
                 .updateConfig(updateConfig)
+                .setUpdateDownloadListener(new UpdateDownloadListener() {
+                    @Override
+                    public void onStart() {
+                        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                .emit("LK_UpdateDownloadListener", "onStart");
+                    }
+
+                    @Override
+                    public void onDownload(int progress) {
+                        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                .emit("LK_UpdateDownloadListener", "onDownload|"+progress);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                .emit("LK_UpdateDownloadListener", "onFinish");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                .emit("LK_UpdateDownloadListener", "onError|"+e.getMessage());
+                    }
+                })
+                .setCancelBtnClickListener(new OnBtnClickListener(){
+
+                    @Override
+                    public boolean onClick() {
+                        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                .emit("LK_OnBtnClickListener", "onCancelBtnClick");
+                        // TODO: emit after async to return bool
+                        return disabledCancel;
+                    }
+                })
+                .setUpdateBtnClickListener(new OnBtnClickListener(){
+
+                    @Override
+                    public boolean onClick() {
+                        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                .emit("LK_OnBtnClickListener", "onUpdateBtnClick");
+                        // TODO: emit after async to return bool
+                        return disabledUpdate;
+                    }
+                })
                 .update();
+
     }
+
+//    @ReactMethod
+//    public void setCancelBtnClickDisable(boolean bool){
+//        disabledCancel = bool;
+//    }
+//
+//    @ReactMethod
+//    public void setUpdateBtnClickDisable(boolean bool){
+//        disabledUpdate = bool;
+//    }
 
     @Override
     public Map<String, Object> getConstants() {
@@ -154,3 +217,7 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
         return "RNAndroidAutoUpdate";
     }
 }
+
+// TODO: 删除已安装APK
+// 在Application或者MainActivity中调用，以达到安装成功启动后删除已安装apk
+// UpdateAppUtils.getInstance().deleteInstalledApk()

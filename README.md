@@ -25,6 +25,18 @@ UpdateApp({
   updateContent:"1、Kotlin重构版\n2、支持自定义UI\n3、增加md5校验\n4、更多功能等你探索",
   force:true,
   uiType:uiTypeConstant.PLENTIFUL,
-  titleTextColor:"red"
+  titleTextColor:"red",
+  UpdateDownloadListener:(type,msg)=>{
+    //@param type: onStart | onDownload | onFinish | onError
+    if(type === "onDownload"){
+       console.log(msg);   // progress
+    }else if(type === "msg"){
+       alert(msg);         // error message
+    }
+  },
+  OnBtnClickListener:(type)=>{
+    console.log(type);      // onCancelBtnClick, onUpdateBtnClick
+    return false;
+  }
 });
 ```

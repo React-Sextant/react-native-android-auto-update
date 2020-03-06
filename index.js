@@ -1,4 +1,4 @@
-import { NativeModules,processColor } from 'react-native';
+import { NativeModules,DeviceEventEmitter,processColor } from 'react-native';
 import normalizeColor from 'react-native/Libraries/Color/normalizeColor'
 
 const { RNAndroidAutoUpdate } = NativeModules;
@@ -14,6 +14,22 @@ export function UpdateApp(params) {
             }
         }
     });
+
+    //process native event in params callback
+    if(params.hasOwnProperty("UpdateDownloadListener")&&typeof params.UpdateDownloadListener === "function"){
+        DeviceEventEmitter.removeAllListeners("UpdateDownloadListener");
+        DeviceEventEmitter.addListener("LK_UpdateDownloadListener",(msg)=>{
+            params.UpdateDownloadListener.apply(this,msg.split("|"))
+            // RNAndroidAutoUpdate.setUpdateBtnClickDisable(params.UpdateDownloadListener.apply(this,msg.split("|")))
+        })
+    }
+    if(params.hasOwnProperty("OnBtnClickListener")&&typeof params.OnBtnClickListener === "function"){
+        DeviceEventEmitter.removeAllListeners("OnBtnClickListener");
+        DeviceEventEmitter.addListener("LK_OnBtnClickListener",(msg)=>{
+            params.OnBtnClickListener.call(this,msg)
+            // RNAndroidAutoUpdate.setCancelBtnClickDisable(params.OnBtnClickListener.call(this,msg))
+        })
+    }
 
     return RNAndroidAutoUpdate.UpdateApp(params)
 }

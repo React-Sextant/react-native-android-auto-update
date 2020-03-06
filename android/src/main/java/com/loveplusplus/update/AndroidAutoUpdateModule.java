@@ -76,15 +76,57 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
         UiConfig uiConfig = new UiConfig();
         if(map.hasKey("uiType")){
             uiConfig.setUiType(map.getString("uiType"));
-
+        }
+        if(map.hasKey("titleTextSize")){
+            uiConfig.setTitleTextSize((float)map.getInt("titleTextSize"));
+        }
+        if(map.hasKey("titleTextColor")){
+            uiConfig.setTitleTextColor(map.getInt("titleTextColor"));
+        }
+        if(map.hasKey("contentTextSize")){
+            uiConfig.setContentTextSize((float)map.getInt("contentTextSize"));
+        }
+        if(map.hasKey("contentTextColor")){
+            uiConfig.setContentTextColor(map.getInt("contentTextColor"));
+        }
+        if(map.hasKey("updateBtnBgColor")){
+            uiConfig.setUpdateBtnBgColor(map.getInt("updateBtnBgColor"));
+        }
+        if(map.hasKey("updateBtnTextColor")){
+            uiConfig.setUpdateBtnTextColor(map.getInt("updateBtnTextColor"));
+        }
+        if(map.hasKey("updateBtnTextSize")){
+            uiConfig.setUpdateBtnTextSize((float)map.getInt("updateBtnTextSize"));
+        }
+        if(map.hasKey("updateBtnText")){
+            uiConfig.setUpdateBtnText(map.getString("updateBtnText"));
+        }
+        if(map.hasKey("cancelBtnBgColor")){
+            uiConfig.setCancelBtnBgColor(map.getInt("cancelBtnBgColor"));
+        }
+        if(map.hasKey("cancelBtnTextColor")){
+            uiConfig.setCancelBtnTextColor(map.getInt("cancelBtnTextColor"));
+        }
+        if(map.hasKey("cancelBtnTextSize")){
+            uiConfig.setCancelBtnTextSize((float)map.getInt("cancelBtnTextSize"));
+        }
+        if(map.hasKey("cancelBtnText")){
+            uiConfig.setCancelBtnText(map.getString("cancelBtnText"));
+        }
+        if(map.hasKey("downloadingToastText")){
+            uiConfig.setDownloadingToastText(map.getString("downloadingToastText"));
+        }
+        if(map.hasKey("downloadingBtnText")){
+            uiConfig.setDownloadingBtnText(map.getString("downloadingBtnText"));
+        }
+        if(map.hasKey("downloadFailText")){
+            uiConfig.setDownloadFailText(map.getString("downloadFailText"));
         }
 
-        uiConfig.setUpdateLogoImgRes(context.getResources().getIdentifier("ic_launcher","mipmap",context.getPackageName()));
 
         // TODO: RN require() to getResourceId
-        if(map.hasKey("updateLogoImgRes")){
-            uiConfig.setUpdateLogoImgRes(map.getInt("updateLogoImgRes"));
-        }
+        uiConfig.setUpdateLogoImgRes(context.getResources().getIdentifier("ic_launcher","mipmap",context.getPackageName()));
+
 
 
         UpdateAppUtils

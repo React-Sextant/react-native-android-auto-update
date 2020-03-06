@@ -4,7 +4,7 @@ React Native Android自动下载更新APK，进度条在通知栏中显示
 ## Getting Started <a href="https://www.npmjs.com/package/react-native-android-auto-update"><img alt="npm version" src="http://img.shields.io/npm/v/react-native-android-auto-update.svg?style=flat-square"></a>
 
 
-`$ npm install react-native-android-auto-update@latest`
+`$ npm install git+http://git@github.com/React-Sextant/react-native-android-auto-update.git`
 
 
 `$ react-native link react-native-android-auto-update`
@@ -17,13 +17,14 @@ React Native Android自动下载更新APK，进度条在通知栏中显示
 reference by [https://github.com/teprinciple/UpdateAppUtils](https://github.com/teprinciple/UpdateAppUtils)
 
 ```javascript
-import {NativeModules} from 'react-native';
+import {UpdateApp,uiTypeConstant} from 'react-native-android-auto-update'
 
-NativeModules.RNAndroidAutoUpdate.UpdateApp({
-  apkUrl:"www.baidu.com",
+UpdateApp({
+  apkUrl:"http://.example.com/demo.apk",
   updateTitle:"发现新版本V2.0.0",
   updateContent:"1、Kotlin重构版\n2、支持自定义UI\n3、增加md5校验\n4、更多功能等你探索",
   force:true,
-  uiType:NativeModules.RNAndroidAutoUpdate.PLENTIFUL,
+  uiType:uiTypeConstant.PLENTIFUL,
+  titleTextColor:"red"
 });
 ```

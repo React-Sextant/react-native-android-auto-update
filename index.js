@@ -4,6 +4,13 @@ import normalizeColor from 'react-native/Libraries/Color/normalizeColor'
 const { RNAndroidAutoUpdate } = NativeModules;
 const colorProps = ["titleTextColor","contentTextColor","updateBtnBgColor","updateBtnTextColor","cancelBtnBgColor","cancelBtnTextColor"];
 
+/**
+ * UpdateApp
+ *
+ * @param {Function} params.UpdateDownloadListener
+ * @param {Function} params.OnBtnClickListener
+ * @returns {void}
+ * **/
 export function UpdateApp(params) {
     //process color to return int
     Object.keys(params).forEach(item=>{
@@ -22,15 +29,20 @@ export function UpdateApp(params) {
             params.UpdateDownloadListener.apply(this,msg.split("|"))
         })
     }
-    if(params.hasOwnProperty("OnBtnClickListener")&&typeof params.OnBtnClickListener === "function"){
-        DeviceEventEmitter.removeAllListeners("OnBtnClickListener");
-        DeviceEventEmitter.addListener("LK_OnBtnClickListener",async (msg)=>{
-            if(msg==="onCancelBtnClick"){
-                RNAndroidAutoUpdate.setCancelBtnClickDisable(await Boolean(params.OnBtnClickListener.call(this,msg)))
-            }else if(msg==="onUpdateBtnClick"){
-                RNAndroidAutoUpdate.setUpdateBtnClickDisable(await Boolean(params.OnBtnClickListener.call(this,msg)))
-            }}
-        )
+    if(params.hasOwnProperty("OnBtnClickListener")){
+        if(typeof params.OnBtnClickListener === "function"){
+            DeviceEventEmitter.removeAllListeners("OnBtnClickListener");
+            DeviceEventEmitter.addListener("LK_OnBtnClickListener",async (msg)=>{
+                if(msg==="onCancelBtnClick"){
+                    RNAndroidAutoUpdate.setCancelBtnClickDisable(await Boolean(params.OnBtnClickListener.call(this,msg)))
+                }else if(msg==="onUpdateBtnClick"){
+                    RNAndroidAutoUpdate.setUpdateBtnClickDisable(await Boolean(params.OnBtnClickListener.call(this,msg)))
+                }}
+            );
+            params["__OnBtnClickListener"] = true
+        }else {
+            delete params["__OnBtnClickListener"]
+        }
     }
 
     return RNAndroidAutoUpdate.UpdateApp(params)

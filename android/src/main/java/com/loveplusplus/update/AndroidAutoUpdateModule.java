@@ -24,6 +24,7 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
 
     boolean disabledCancel = false;
     boolean disabledUpdate = false;
+    ReadableMap mReadableMap;
     Lock lock = new ReentrantLock();
     Condition condition = lock.newCondition();
 
@@ -35,7 +36,8 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void UpdateApp(ReadableMap map){
+    public void UpdateApp(final ReadableMap map){
+        mReadableMap = map;
         String apkUrl = "";
         String updateTitle = "";
         String updateContent = "";
@@ -177,38 +179,46 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
 
                     @Override
                     public boolean onClick() {
-                        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                .emit("LK_OnBtnClickListener", "onCancelBtnClick");
-                        lock.lock();
+                        if(map.hasKey("__OnBtnClickListener")){
+                            context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                    .emit("LK_OnBtnClickListener", "onCancelBtnClick");
+                            lock.lock();
 
-                        try {
-                            condition.await();
-                            return disabledCancel;
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                            return disabledCancel;
-                        } finally {
-                            lock.unlock();
+                            try {
+                                condition.await();
+                                return disabledCancel;
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                                return disabledCancel;
+                            } finally {
+                                lock.unlock();
+                            }
+                        }else {
+                            return false;
                         }
                     }
                 })
                 .setUpdateBtnClickListener(new OnBtnClickListener(){
 
-                    //TODO: onClick need to be a async function for resolve async/await in JS
+                    //TODO: onClick need to be a async function
                     @Override
                     public boolean onClick() {
-                        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                .emit("LK_OnBtnClickListener", "onUpdateBtnClick");
-                        lock.lock();
+                        if(map.hasKey("__OnBtnClickListener")){
+                            context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                    .emit("LK_OnBtnClickListener", "onUpdateBtnClick");
+                            lock.lock();
 
-                        try {
-                            condition.await();
-                            return disabledUpdate;
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                            return disabledUpdate;
-                        } finally {
-                            lock.unlock();
+                            try {
+                                condition.await();
+                                return disabledUpdate;
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                                return disabledUpdate;
+                            } finally {
+                                lock.unlock();
+                            }
+                        }else {
+                            return false;
                         }
                     }
                 })
@@ -218,23 +228,27 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setCancelBtnClickDisable(final boolean bool){
-        lock.lock();
-        try {
-            condition.signal();
-            disabledCancel = bool;
-        } finally {
-            lock.unlock();
+        if(mReadableMap.hasKey("__OnBtnClickListener")){
+            lock.lock();
+            try {
+                condition.signal();
+                disabledCancel = bool;
+            } finally {
+                lock.unlock();
+            }
         }
     }
 
     @ReactMethod
     public void setUpdateBtnClickDisable(boolean bool){
-        lock.lock();
-        try {
-            condition.signal();
-            disabledUpdate = bool;
-        } finally {
-            lock.unlock();
+        if(mReadableMap.hasKey("__OnBtnClickListener")){
+            lock.lock();
+            try {
+                condition.signal();
+                disabledUpdate = bool;
+            } finally {
+                lock.unlock();
+            }
         }
     }
 

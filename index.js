@@ -20,15 +20,17 @@ export function UpdateApp(params) {
         DeviceEventEmitter.removeAllListeners("UpdateDownloadListener");
         DeviceEventEmitter.addListener("LK_UpdateDownloadListener",(msg)=>{
             params.UpdateDownloadListener.apply(this,msg.split("|"))
-            // RNAndroidAutoUpdate.setUpdateBtnClickDisable(params.UpdateDownloadListener.apply(this,msg.split("|")))
         })
     }
     if(params.hasOwnProperty("OnBtnClickListener")&&typeof params.OnBtnClickListener === "function"){
         DeviceEventEmitter.removeAllListeners("OnBtnClickListener");
-        DeviceEventEmitter.addListener("LK_OnBtnClickListener",(msg)=>{
-            params.OnBtnClickListener.call(this,msg)
-            // RNAndroidAutoUpdate.setCancelBtnClickDisable(params.OnBtnClickListener.call(this,msg))
-        })
+        DeviceEventEmitter.addListener("LK_OnBtnClickListener",async (msg)=>{
+            if(msg==="onCancelBtnClick"){
+                RNAndroidAutoUpdate.setCancelBtnClickDisable(await Boolean(params.OnBtnClickListener.call(this,msg)))
+            }else if(msg==="onUpdateBtnClick"){
+                RNAndroidAutoUpdate.setUpdateBtnClickDisable(await Boolean(params.OnBtnClickListener.call(this,msg)))
+            }}
+        )
     }
 
     return RNAndroidAutoUpdate.UpdateApp(params)

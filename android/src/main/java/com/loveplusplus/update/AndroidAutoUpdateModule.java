@@ -8,6 +8,9 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import constacne.UiType;
 import model.UiConfig;
@@ -21,6 +24,8 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
 
     boolean disabledCancel = false;
     boolean disabledUpdate = false;
+    Lock lock = new ReentrantLock();
+    Condition condition = lock.newCondition();
 
 
     private static ReactApplicationContext context;
@@ -174,33 +179,64 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
                     public boolean onClick() {
                         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                                 .emit("LK_OnBtnClickListener", "onCancelBtnClick");
-                        // TODO: emit after async to return bool
-                        return disabledCancel;
+                        lock.lock();
+
+                        try {
+                            condition.await();
+                            return disabledCancel;
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            return disabledCancel;
+                        } finally {
+                            lock.unlock();
+                        }
                     }
                 })
                 .setUpdateBtnClickListener(new OnBtnClickListener(){
 
+                    //TODO: onClick need to be a async function for resolve async/await in JS
                     @Override
                     public boolean onClick() {
                         context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                                 .emit("LK_OnBtnClickListener", "onUpdateBtnClick");
-                        // TODO: emit after async to return bool
-                        return disabledUpdate;
+                        lock.lock();
+
+                        try {
+                            condition.await();
+                            return disabledUpdate;
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            return disabledUpdate;
+                        } finally {
+                            lock.unlock();
+                        }
                     }
                 })
                 .update();
 
     }
 
-//    @ReactMethod
-//    public void setCancelBtnClickDisable(boolean bool){
-//        disabledCancel = bool;
-//    }
-//
-//    @ReactMethod
-//    public void setUpdateBtnClickDisable(boolean bool){
-//        disabledUpdate = bool;
-//    }
+    @ReactMethod
+    public void setCancelBtnClickDisable(final boolean bool){
+        lock.lock();
+        try {
+            condition.signal();
+            disabledCancel = bool;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    @ReactMethod
+    public void setUpdateBtnClickDisable(boolean bool){
+        lock.lock();
+        try {
+            condition.signal();
+            disabledUpdate = bool;
+        } finally {
+            lock.unlock();
+        }
+    }
 
     @Override
     public Map<String, Object> getConstants() {

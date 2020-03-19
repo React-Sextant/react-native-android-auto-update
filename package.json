@@ -25,7 +25,7 @@
   "bugs": {
     "url": "https://github.com/React-Sextant/react-native-android-auto-update/issues"
   },
-  "devDependencies": {
+  "dependencies": {
     "normalize-css-color": "1.0.2"
   }
 }

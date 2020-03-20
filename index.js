@@ -1,7 +1,7 @@
 import { NativeModules,DeviceEventEmitter,processColor } from 'react-native';
 import normalizeColor from 'normalize-css-color';//for old version
 
-const { RNAndroidAutoUpdate } = NativeModules;
+const RNAndroidAutoUpdate = NativeModules.RNAndroidAutoUpdate||{};
 const colorProps = ["titleTextColor","contentTextColor","updateBtnBgColor","updateBtnTextColor","cancelBtnBgColor","cancelBtnTextColor"];
 
 /**

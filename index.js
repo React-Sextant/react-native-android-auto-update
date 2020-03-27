@@ -48,8 +48,17 @@ export function UpdateApp(params) {
     return RNAndroidAutoUpdate.UpdateApp(params)
 }
 
-export const uiTypeConstant = {
+export function deleteInstalledApk(){
+    return RNAndroidAutoUpdate.deleteInstalledApk()
+}
+
+export const UiType = {
     SIMPLE:RNAndroidAutoUpdate.SIMPLE,
     PLENTIFUL:RNAndroidAutoUpdate.PLENTIFUL,
-    CUSTOM:RNAndroidAutoUpdate.CUSTOM
+    CUSTOM:RNAndroidAutoUpdate.CUSTOM,
+};
+
+export const DownLoadBy = {
+    APP:RNAndroidAutoUpdate.APP,
+    BROWSER:RNAndroidAutoUpdate.BROWSER,
 };

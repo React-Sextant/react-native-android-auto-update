@@ -17,14 +17,14 @@ React Native Android自动下载更新APK，进度条在通知栏中显示
 reference by [https://github.com/teprinciple/UpdateAppUtils](https://github.com/teprinciple/UpdateAppUtils)
 
 ```javascript
-import {UpdateApp,uiTypeConstant} from 'react-native-android-auto-update'
+import {UpdateApp,UiType} from 'react-native-android-auto-update'
 
 UpdateApp({
   apkUrl:"http://.example.com/demo.apk",
   updateTitle:"发现新版本V2.0.0",
   updateContent:"1、Kotlin重构版\n2、支持自定义UI\n3、增加md5校验\n4、更多功能等你探索",
   force:true,
-  uiType:uiTypeConstant.PLENTIFUL,
+  uiType:UiType.PLENTIFUL,
   titleTextColor:"red",
   UpdateDownloadListener:(type,msg)=>{
     //@param type: onStart | onDownload | onFinish | onError

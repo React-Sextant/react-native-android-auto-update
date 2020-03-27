@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 dependencies {
 
-    compile 'com.teprinciple:updateapputils:2.1.0'
+    compile 'com.teprinciple:updateapputils:2.2.0'
     compile "com.facebook.react:react-native:+"
 
 }

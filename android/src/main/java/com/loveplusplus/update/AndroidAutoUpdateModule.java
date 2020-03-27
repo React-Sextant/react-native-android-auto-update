@@ -12,6 +12,7 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import constacne.DownLoadBy;
 import constacne.UiType;
 import model.UiConfig;
 import model.UpdateConfig;
@@ -54,8 +55,20 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
 
         //updateConfig
         UpdateConfig updateConfig = new UpdateConfig();
+        if(map.hasKey("isDebug")){
+            updateConfig.setDebug(map.getBoolean("isDebug"));
+        }
         if(map.hasKey("force")){
             updateConfig.setForce(map.getBoolean("force"));
+        }
+        if(map.hasKey("apkSavePath")){
+            updateConfig.setApkSavePath(map.getString("apkSavePath"));
+        }
+        if(map.hasKey("apkSaveName")){
+            updateConfig.setApkSaveName(map.getString("apkSaveName"));
+        }
+        if(map.hasKey("downloadBy")){
+            updateConfig.setDownloadBy(map.getInt("downloadBy"));
         }
         if(map.hasKey("needCheckMd5")){
             updateConfig.setNeedCheckMd5(map.getBoolean("needCheckMd5"));
@@ -227,6 +240,11 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void deleteInstalledApk(){
+        UpdateAppUtils.getInstance().deleteInstalledApk();
+    }
+
+    @ReactMethod
     public void setCancelBtnClickDisable(final boolean bool){
         if(mReadableMap.hasKey("__OnBtnClickListener")){
             lock.lock();
@@ -258,6 +276,8 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
         constants.put("SIMPLE", UiType.SIMPLE);
         constants.put("PLENTIFUL", UiType.PLENTIFUL);
         constants.put("CUSTOM", UiType.CUSTOM);
+        constants.put("APP", DownLoadBy.APP);
+        constants.put("BROWSER", DownLoadBy.BROWSER);
 
         return constants;
     }
@@ -267,7 +287,3 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
         return "RNAndroidAutoUpdate";
     }
 }
-
-// TODO: 删除已安装APK
-// 在Application或者MainActivity中调用，以达到安装成功启动后删除已安装apk
-// UpdateAppUtils.getInstance().deleteInstalledApk()

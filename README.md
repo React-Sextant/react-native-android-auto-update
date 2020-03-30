@@ -12,16 +12,16 @@ React Native Android自动下载更新APK，进度条在通知栏中显示
 ## v0.1.0 usage
 [README_old.md](https://github.com/react-sextant/react-native-android-auto-update/blob/master/README_old.md)
 
-## v2.0 usage
+## v2.2.1 usage
 
-reference by [https://github.com/teprinciple/UpdateAppUtils](https://github.com/teprinciple/UpdateAppUtils)
+reference by [https://github.com/teprinciple/UpdateAppUtils@2.2.1](https://github.com/teprinciple/UpdateAppUtils)
 
 ```javascript
 import {UpdateApp,UiType} from 'react-native-android-auto-update'
 
 UpdateApp({
   apkUrl:"http://.example.com/demo.apk",
-  updateTitle:"发现新版本V2.0.0",
+  updateTitle:"发现新版本V2.2.1",
   updateContent:"1、Kotlin重构版\n2、支持自定义UI\n3、增加md5校验\n4、更多功能等你探索",
   force:true,
   uiType:UiType.PLENTIFUL,

@@ -12,8 +12,8 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import constacne.DownLoadBy;
-import constacne.UiType;
+import constant.DownLoadBy;
+import constant.UiType;
 import model.UiConfig;
 import model.UpdateConfig;
 import update.UpdateAppUtils;
@@ -237,11 +237,6 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
                 })
                 .update();
 
-    }
-
-    @ReactMethod
-    public void deleteInstalledApk(){
-        UpdateAppUtils.getInstance().deleteInstalledApk();
     }
 
     @ReactMethod

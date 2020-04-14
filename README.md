@@ -15,7 +15,7 @@ React Native Android自动下载更新APK，进度条在通知栏中显示
 ## v2.3.0 usage
 
 ### Android Config
-> MainApplication.java
+> 需要在`MainApplication.java`手动添加一些配置：
 
 ```java
 import update.UpdateAppUtils;
@@ -28,9 +28,8 @@ public void onCreate() {
   UpdateAppUtils.init(this); // 修复context空指针
 }
 ```
-
-reference by [https://github.com/teprinciple/UpdateAppUtils@2.3.0](https://github.com/teprinciple/UpdateAppUtils)
-
+### JavaScript
+[👉全部的UpdateAppUtils Api说明](https://github.com/teprinciple/UpdateAppUtils/tree/5afcb34f0d4a9bb11cec81119fdc1f14197a1114#api%E8%AF%B4%E6%98%8E)
 ```javascript
 import {UpdateApp,UiType} from 'react-native-android-auto-update'
 
@@ -50,8 +49,8 @@ UpdateApp({
     }
   },
   OnBtnClickListener:(type)=>{
-    console.log(type);      // onCancelBtnClick, onUpdateBtnClick
-    return false;
+    console.log(type);     // onCancelBtnClick, onUpdateBtnClick
+    return false;          // 事件是否消费，是否需要传递下去。false-会执行原有点击逻辑，true-只执行本次设置的点击逻辑
   }
 });
 ```

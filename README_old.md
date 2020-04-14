@@ -40,8 +40,8 @@ repositories {
 ```
 
 ## todo-list
- - [ ] 未更新至`android-auto-update` v2.0
- - [ ] 未启用推送通知更新
+ - [x] 未更新至`android-auto-update` [v2.0](https://github.com/React-Sextant/react-native-android-auto-update/blob/master/README.md)
+ - [x] 未启用推送通知更新
 
 ## core
  - [DownloadService.java](https://github.com/react-sextant/react-native-android-auto-update/blob/master/android/src/main/java/com/loveplusplus/update/DownloadService.java)

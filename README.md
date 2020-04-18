@@ -13,22 +13,6 @@ React Native Android自动下载更新APK，进度条在通知栏中显示
 [README_old.md](https://github.com/react-sextant/react-native-android-auto-update/blob/master/README_old.md)
 
 ## v2.3.0 usage
-
-### Android Config
-> 需要在`MainApplication.java`手动添加一些配置：
-
-```java
-import update.UpdateAppUtils;
-
-...
-
-@Override
-public void onCreate() {
-  super.onCreate();
-  UpdateAppUtils.init(this); // 修复context空指针
-}
-```
-### JavaScript
 [👉全部的UpdateAppUtils Api说明](https://github.com/teprinciple/UpdateAppUtils/tree/5afcb34f0d4a9bb11cec81119fdc1f14197a1114#api%E8%AF%B4%E6%98%8E)
 ```javascript
 import {UpdateApp,UiType} from 'react-native-android-auto-update'

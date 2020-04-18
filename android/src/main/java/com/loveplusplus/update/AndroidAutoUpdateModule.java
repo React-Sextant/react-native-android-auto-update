@@ -34,6 +34,7 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
     public AndroidAutoUpdateModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.context = reactContext;
+        UpdateAppUtils.init(reactContext);
     }
 
     @ReactMethod

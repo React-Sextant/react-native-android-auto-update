@@ -1,10 +1,16 @@
 package com.loveplusplus.update;
 
+import android.view.View;
+import android.widget.TextView;
+
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +20,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import constant.DownLoadBy;
 import constant.UiType;
+import listener.Md5CheckResultListener;
+import listener.OnInitUiListener;
 import model.UiConfig;
 import model.UpdateConfig;
 import update.UpdateAppUtils;
@@ -104,6 +112,12 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
         UiConfig uiConfig = new UiConfig();
         if(map.hasKey("uiType")){
             uiConfig.setUiType(map.getString("uiType"));
+            if(map.getString("uiType").equals(UiType.CUSTOM)){
+                // 本地需要创建view_update_dialog_custom.xml
+                uiConfig.setCustomLayoutId(context.getResources().getIdentifier("view_update_dialog_custom","layout",context.getPackageName()));
+            }else {
+                uiConfig.setCustomLayoutId(R.layout.view_update_dialog_simple);
+            }
         }
         if(map.hasKey("titleTextSize")){
             uiConfig.setTitleTextSize((float)map.getInt("titleTextSize"));
@@ -156,14 +170,20 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
         uiConfig.setUpdateLogoImgRes(context.getResources().getIdentifier("ic_launcher","mipmap",context.getPackageName()));
 
 
-
-        UpdateAppUtils
-                .getInstance()
+        UpdateAppUtils instance = UpdateAppUtils.getInstance();
+        instance
                 .apkUrl(apkUrl)
                 .updateTitle(updateTitle)
                 .updateContent(updateContent)
                 .uiConfig(uiConfig)
                 .updateConfig(updateConfig)
+                .setMd5CheckResultListener(new Md5CheckResultListener() {
+                    @Override
+                    public void onResult(boolean b) {
+                        context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                .emit("LK_UpdateDownloadListener", "onCheckMd5|" + (b ? "true" : "false"));
+                    }
+                })
                 .setUpdateDownloadListener(new UpdateDownloadListener() {
                     @Override
                     public void onStart() {
@@ -235,8 +255,26 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
                             return false;
                         }
                     }
-                })
-                .update();
+                });
+
+        // CUSTOM layout
+        if(map.getString("uiType").equals(UiType.CUSTOM)){
+            final String finalUpdateTitle = updateTitle;
+            final String finalUpdateContent = updateContent;
+            instance.setOnInitUiListener(new OnInitUiListener(){
+                @Override
+                public void onInitUpdateUi(@Nullable View view, @NotNull UpdateConfig updateConfig, @NotNull UiConfig uiConfig) {
+//                    ((TextView)view.findViewById(R.id.tv_update_title)).setText(finalUpdateTitle);
+//                    ((TextView)view.findViewById(R.id.tv_update_content)).setText(finalUpdateContent);
+
+//                    ((TextView)view.findViewById(R.id.btn_update_sure)).setText(uiConfig.getUpdateBtnText());
+//                    ((TextView)view.findViewById(view.getResources().getIdentifier("tv_version_name","id",context.getPackageName()))).setText(updateConfig.getServerVersionName());
+                }
+            });
+        }
+
+
+        instance.update();
 
     }
 

@@ -38,3 +38,32 @@ UpdateApp({
   }
 });
 ```
+
+## v2.4.0 usage
+
+ - **完善uiType类型`UiType.CUSTOM`**
+ 
+   - 如果使用`UiType.CUSTOM`类型，本库custom ui不能通过RN生成，只能**自定义XML**实现，
+   - 所以默认为对Android有一定基础，没有的话也可以借此机会学习😊，不过本库已为您创建了一个[custom xml](https://github.com/React-Sextant/react-native-android-auto-update/tree/master/android/src/main/res/layout/view_update_dialog_custom.xml)，
+   - 如果需要定制化，在本地根android项目中创建一个名为`view_update_dialog_custom.xml`的Layout文件即可覆盖
+   - 文件路径：*android / app / src / main / res / layout / view_update_dialog_custom.xml*
+
+`view_update_dialog_custom.xml`元素ID必须按照以下命名
+```xml
+<!--更新标题-->
+<TextView android:id="@+id/tv_update_title" />
+<!--更新内容-->
+<TextView android:id="@+id/tv_update_content" />
+
+<!--apk版本名-->
+<TextView android:id="@+id/tv_version_name" />
+<!--apk版本号-->
+<TextView android:id="@+id/tv_version_code" />
+
+<!--更新按钮文案-->
+<TextView android:id="@+id/btn_update_sure" />
+<!--取消按钮文案-->
+<Button android:id="@+id/btn_update_cancel" />
+
+...
+```

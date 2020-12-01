@@ -1,16 +1,10 @@
 package com.loveplusplus.update;
 
-import android.view.View;
-import android.widget.TextView;
-
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +15,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import constant.DownLoadBy;
 import constant.UiType;
 import listener.Md5CheckResultListener;
-import listener.OnInitUiListener;
 import model.UiConfig;
 import model.UpdateConfig;
 import update.UpdateAppUtils;
@@ -43,6 +36,15 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
         super(reactContext);
         this.context = reactContext;
         UpdateAppUtils.init(reactContext);
+    }
+
+    // 根项目创建view_update_dialog_custom.xml即可覆盖
+    private int getLayoutId() {
+        try{
+            return context.getResources().getIdentifier("view_update_dialog_custom", "layout", context.getPackageName());
+        }catch (Exception e){
+            return R.layout.view_update_dialog_custom;
+        }
     }
 
     @ReactMethod
@@ -113,8 +115,7 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
         if(map.hasKey("uiType")){
             uiConfig.setUiType(map.getString("uiType"));
             if(map.getString("uiType").equals(UiType.CUSTOM)){
-                // 本地需要创建view_update_dialog_custom.xml
-                uiConfig.setCustomLayoutId(context.getResources().getIdentifier("view_update_dialog_custom","layout",context.getPackageName()));
+                uiConfig.setCustomLayoutId(getLayoutId());
             }else {
                 uiConfig.setCustomLayoutId(R.layout.view_update_dialog_simple);
             }
@@ -256,23 +257,6 @@ public class AndroidAutoUpdateModule extends ReactContextBaseJavaModule {
                         }
                     }
                 });
-
-        // CUSTOM layout
-        if(map.getString("uiType").equals(UiType.CUSTOM)){
-            final String finalUpdateTitle = updateTitle;
-            final String finalUpdateContent = updateContent;
-            instance.setOnInitUiListener(new OnInitUiListener(){
-                @Override
-                public void onInitUpdateUi(@Nullable View view, @NotNull UpdateConfig updateConfig, @NotNull UiConfig uiConfig) {
-//                    ((TextView)view.findViewById(R.id.tv_update_title)).setText(finalUpdateTitle);
-//                    ((TextView)view.findViewById(R.id.tv_update_content)).setText(finalUpdateContent);
-
-//                    ((TextView)view.findViewById(R.id.btn_update_sure)).setText(uiConfig.getUpdateBtnText());
-//                    ((TextView)view.findViewById(view.getResources().getIdentifier("tv_version_name","id",context.getPackageName()))).setText(updateConfig.getServerVersionName());
-                }
-            });
-        }
-
 
         instance.update();
 
